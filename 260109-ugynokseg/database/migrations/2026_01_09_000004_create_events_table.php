@@ -13,6 +13,19 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('agency_id')->constrained("agencies")->cascadeOnDelete();
+            
+            $table->string('name');
+
+            $table->unsignedInteger('limit'); 
+            $table->string('type', 50);
+            $table->dateTime('date');
+            $table->string('location');
+
+            $table->unsignedTinyInteger('status')->default(0); // 0 aktív, 1 törölt, 2 lejárt
+            
+
             $table->timestamps();
         });
     }

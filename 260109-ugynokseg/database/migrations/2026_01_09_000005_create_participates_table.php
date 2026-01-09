@@ -11,9 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agencies', function (Blueprint $table) {
+        Schema::create('participates', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')->constrained("users")->cascadeOnDelete();
+            $table->foreignId('event_id')->constrained("events")->cascadeOnDelete();
+
+
+            $table->boolean('present')->default(true);
+
             $table->timestamps();
+
+            $table->unique(['user_id', 'event_id']);
         });
     }
 
@@ -22,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agencies');
+        Schema::dropIfExists('participates');
     }
 };

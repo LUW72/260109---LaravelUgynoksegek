@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'vip',
+        'permission'
     ];
 
     /**
@@ -45,4 +47,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function participates() 
+    {
+        return $this->hasMany(Participate::class);
+    }
+
+    public function events() 
+    {
+        return $this->belongsToMany(Event::class, 'participates')
+            ->withPivot(['present'])
+            ->withTimestamps();
+    }
+
 }

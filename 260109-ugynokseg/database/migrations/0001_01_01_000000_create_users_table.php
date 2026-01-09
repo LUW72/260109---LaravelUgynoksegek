@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            $table->boolean('vip')->default(false);
+            $table->tinyInteger('permission')->default(0); // 0 user, 1 agency, 2 admin      
+
             $table->rememberToken();
             $table->timestamps();
         });
