@@ -12,7 +12,9 @@ class ParticipateController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(
+            Participate::query()->orderBy('date', 'desc')->get()
+        );
     }
 
     /**
@@ -36,7 +38,7 @@ class ParticipateController extends Controller
      */
     public function show(Participate $participate)
     {
-        //
+        return response()->json($participate);
     }
 
     /**
@@ -62,4 +64,23 @@ class ParticipateController extends Controller
     {
         //
     }
+
+
+    public function cancelToday(Request $request)
+    {
+        $userId = $request->user()->user_id ?? $request->user()->id;
+
+        $updated = Participate::query()
+            ->where('user_id', $userId)
+            ->whereHas('event', function ($q) {
+                $q->whereDate('date', today())
+                ->where('status', 0);
+            })
+            ->update(['present' => false]);
+
+        return response()->json([
+            'message' => 'Participation cancelled for today (where applicable).',
+            'updated' => $updated
+        ]);
+    }    
 }

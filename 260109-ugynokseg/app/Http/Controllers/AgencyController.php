@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\ApiController;
 use App\Models\Agency;
 use Illuminate\Http\Request;
 
-class AgencyController extends Controller
+class AgencyController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->requireAgency($request);
+
+        return Agency::query()->orderBy('name')->get();
     }
 
     /**
@@ -34,9 +37,11 @@ class AgencyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Agency $agency)
+    public function show(Request $request, Agency $agency)
     {
-        //
+        $this->requireAgency($request);
+
+        return $agency;
     }
 
     /**
